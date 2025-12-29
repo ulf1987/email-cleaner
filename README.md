@@ -1,5 +1,7 @@
 # Email Cleaner & Organizer (n8n)
 
+> **Status (29.12.2025):** Der Workflow ist importierbar ("Legacy Mode"), enthält aber noch Platzhalter-Nodes für KI und IMAP-Aktionen. Siehe `TODO.md`.
+
 Dieses Projekt enthält einen n8n-Workflow zur automatischen Bereinigung und Organisation von Yahoo- und AOL-Postfächern via IMAP. Es nutzt **Google Gemini** zur intelligenten Klassifizierung.
 
 ## Voraussetzungen
