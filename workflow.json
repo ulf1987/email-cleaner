@@ -64,8 +64,7 @@
               "value": "Finance"
             }
           ]
-        },
-        "options": {}
+        }
       },
       "id": "ai-classify",
       "name": "AI Classify (Placeholder)",
