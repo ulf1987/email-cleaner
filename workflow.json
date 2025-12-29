@@ -1,5 +1,5 @@
 {
-  "name": "Email Cleaner & Organizer",
+  "name": "Email Cleaner & Organizer (Legacy Compatible)",
   "nodes": [
     {
       "parameters": {
@@ -12,48 +12,40 @@
           ]
         }
       },
-      "id": "trigger-schedule",
       "name": "Alle 30 Min",
       "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.1,
+      "typeVersion": 1,
       "position": [
-        220,
-        240
-      ]
+        240,
+        300
+      ],
+      "id": "trigger-schedule"
     },
     {
-      "parameters": {},
-      "id": "yahoo-imap",
+      "parameters": {
+        "format": "resolved"
+      },
       "name": "Yahoo Read",
       "type": "n8n-nodes-base.emailReadImap",
-      "typeVersion": 2,
+      "typeVersion": 1,
       "position": [
         460,
-        140
+        200
       ],
-      "credentials": {
-        "imap": {
-          "id": "YOUR_YAHOO_CREDENTIAL_ID",
-          "name": "Yahoo Mail"
-        }
-      }
+      "id": "yahoo-imap"
     },
     {
-      "parameters": {},
-      "id": "aol-imap",
+      "parameters": {
+        "format": "resolved"
+      },
       "name": "AOL Read",
       "type": "n8n-nodes-base.emailReadImap",
-      "typeVersion": 2,
+      "typeVersion": 1,
       "position": [
         460,
-        340
+        400
       ],
-      "credentials": {
-        "imap": {
-          "id": "YOUR_AOL_CREDENTIAL_ID",
-          "name": "AOL Mail"
-        }
-      }
+      "id": "aol-imap"
     },
     {
       "parameters": {
@@ -66,19 +58,19 @@
           ]
         }
       },
-      "id": "ai-classify",
-      "name": "AI Classify",
+      "name": "AI Classify (Placeholder)",
       "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
-        780,
-        240
-      ]
+        680,
+        300
+      ],
+      "id": "ai-classify"
     },
     {
       "parameters": {
         "dataType": "string",
-        "value1": "={{ $json.content }}",
+        "value1": "={{$node[\"AI Classify (Placeholder)\"].json[\"content\"]}}",
         "rules": {
           "rules": [
             {
@@ -100,47 +92,47 @@
         },
         "fallbackOutput": 4
       },
-      "id": "switch-category",
       "name": "Switch Category",
       "type": "n8n-nodes-base.switch",
-      "typeVersion": 3,
+      "typeVersion": 1,
       "position": [
-        1000,
-        240
-      ]
+        880,
+        300
+      ],
+      "id": "switch-category"
     },
     {
       "parameters": {},
-      "id": "move-finance",
       "name": "Move to Finance",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1280,
+        1100,
         100
-      ]
+      ],
+      "id": "move-finance"
     },
     {
       "parameters": {},
-      "id": "move-newsletter",
       "name": "Move to Newsletter",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1280,
-        260
-      ]
+        1100,
+        240
+      ],
+      "id": "move-newsletter"
     },
     {
       "parameters": {},
-      "id": "delete-junk",
       "name": "Delete Junk",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1280,
-        420
-      ]
+        1100,
+        380
+      ],
+      "id": "delete-junk"
     }
   ],
   "connections": {
@@ -164,7 +156,7 @@
       "main": [
         [
           {
-            "node": "AI Classify",
+            "node": "AI Classify (Placeholder)",
             "type": "main",
             "index": 0
           }
@@ -175,14 +167,14 @@
       "main": [
         [
           {
-            "node": "AI Classify",
+            "node": "AI Classify (Placeholder)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "AI Classify": {
+    "AI Classify (Placeholder)": {
       "main": [
         [
           {
@@ -216,7 +208,8 @@
             "type": "main",
             "index": 0
           }
-        ]
+        ],
+        []
       ]
     }
   }
