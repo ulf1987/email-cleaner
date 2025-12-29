@@ -61,8 +61,7 @@
     },
     {
       "parameters": {
-        "modelName": "models/gemini-3.0-pro",
-        "options": {},
+        "modelName": "models/gemini-1.5-pro",
         "prompt": {
           "messages": [
             {
@@ -81,7 +80,7 @@
         240
       ],
       "credentials": {
-        "googlePalmApi": {
+        "googleGeminiApi": {
           "id": "YOUR_GEMINI_CREDENTIAL_ID",
           "name": "Google Gemini API"
         }
