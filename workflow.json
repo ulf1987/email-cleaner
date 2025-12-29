@@ -1,0 +1,259 @@
+{
+  "name": "Email Cleaner & Organizer",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "id": "trigger-schedule",
+      "name": "Alle 30 Min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "yahoo-imap",
+      "name": "Yahoo Read",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        460,
+        140
+      ],
+      "credentials": {
+        "imap": {
+          "id": "YOUR_YAHOO_CREDENTIAL_ID",
+          "name": "Yahoo Mail"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "aol-imap",
+      "name": "AOL Read",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        460,
+        340
+      ],
+      "credentials": {
+        "imap": {
+          "id": "YOUR_AOL_CREDENTIAL_ID",
+          "name": "AOL Mail"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an email organization assistant. Analyze the incoming email metadata (Subject, Sender, Body Snippet). Categorize the email into exactly ONE of the following folders: 
+- Finance (Invoices, Banks, PayPal)
+- Newsletter (Marketing, Shops)
+- Social (LinkedIn, Facebook, Notifications)
+- Travel (Tickets, Bookings)
+- Personal (Real people)
+- Junk (Spam, obvious garbage)
+
+Return ONLY the category name."
+            },
+            {
+              "content": "Subject: {{$json.subject}}
+Sender: {{$json.from}}
+Body: {{$json.textPlain}}"
+            }
+          ]
+        }
+      },
+      "id": "ai-classify",
+      "name": "AI Classify",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        780,
+        240
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_OPENAI_CREDENTIAL_ID",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.content }}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "Finance"
+            },
+            {
+              "value2": "Newsletter",
+              "output": 1
+            },
+            {
+              "value2": "Social",
+              "output": 2
+            },
+            {
+              "value2": "Junk",
+              "output": 3
+            }
+          ]
+        },
+        "fallbackOutput": 4
+      },
+      "id": "switch-category",
+      "name": "Switch Category",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        1000,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "messageId": "={{ $('yahoo-imap').item.json.messageId }}",
+        "mailbox": "Finance"
+      },
+      "id": "move-finance",
+      "name": "Move to Finance",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "messageId": "={{ $('yahoo-imap').item.json.messageId }}",
+        "mailbox": "Newsletter"
+      },
+      "id": "move-newsletter",
+      "name": "Move to Newsletter",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        260
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "messageId": "={{ $('yahoo-imap').item.json.messageId }}"
+      },
+      "id": "delete-junk",
+      "name": "Delete Junk",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        420
+      ]
+    }
+  ],
+  "connections": {
+    "Alle 30 Min": {
+      "main": [
+        [
+          {
+            "node": "Yahoo Read",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AOL Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Yahoo Read": {
+      "main": [
+        [
+          {
+            "node": "AI Classify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AOL Read": {
+      "main": [
+        [
+          {
+            "node": "AI Classify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Classify": {
+      "main": [
+        [
+          {
+            "node": "Switch Category",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Category": {
+      "main": [
+        [
+          {
+            "node": "Move to Finance",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Move to Newsletter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [
+          {
+            "node": "Delete Junk",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  }
+}
