@@ -57,30 +57,24 @@
     },
     {
       "parameters": {
-        "modelName": "models/gemini-1.5-pro",
-        "prompt": {
-          "messages": [
+        "values": {
+          "string": [
             {
-              "role": "user",
-              "content": "You are an email organization assistant. Analyze the incoming email metadata. Categorize the email into exactly ONE of the following folders: \n- Finance (Invoices, Banks, PayPal)\n- Newsletter (Marketing, Shops)\n- Social (LinkedIn, Facebook, Notifications)\n- Travel (Tickets, Bookings)\n- Personal (Real people)\n- Junk (Spam, obvious garbage)\n\nReturn ONLY the category name.\n\nSubject: {{$json.subject}}\nSender: {{$json.from}}\nBody: {{$json.textPlain}}"
+              "name": "content",
+              "value": "Finance"
             }
           ]
-        }
+        },
+        "options": {}
       },
       "id": "ai-classify",
-      "name": "AI Classify",
-      "type": "n8n-nodes-base.googleGeminiChat",
+      "name": "AI Classify (Placeholder)",
+      "type": "n8n-nodes-base.set",
       "typeVersion": 1,
       "position": [
         780,
         240
-      ],
-      "credentials": {
-        "googleGeminiApi": {
-          "id": "YOUR_GEMINI_CREDENTIAL_ID",
-          "name": "Google Gemini API"
-        }
-      }
+      ]
     },
     {
       "parameters": {

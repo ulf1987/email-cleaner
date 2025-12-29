@@ -53,4 +53,9 @@ Die Datei `workflow.json` kann direkt in n8n importiert werden.
 3. Klicke oben rechts auf das Menü (...) -> "Import from File".
 4. Wähle die `workflow.json` aus diesem Repository.
 5. Konfiguriere die IMAP Credentials.
-6. Konfiguriere das Google Gemini Credential.
+6. **WICHTIG:** Der Node "AI Classify (Placeholder)" ist nur ein Platzhalter (um Import-Fehler zu vermeiden).
+   - Lösche diesen Node.
+   - Füge einen **Google Gemini Chat** Node an derselben Stelle ein.
+   - Verbinde ihn (Input von Yahoo/AOL, Output zu Switch Category).
+   - Prompt: "Analysiere diese E-Mail und kategorisiere sie in: Finance, Newsletter, Social, Travel, Personal, Junk. Antworte NUR mit dem Kategorie-Namen."
+   - Übergebe Betreff/Body als User Message.
