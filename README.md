@@ -1,6 +1,6 @@
 # Email Cleaner & Organizer (n8n)
 
-Dieses Projekt enthält einen n8n-Workflow zur automatischen Bereinigung und Organisation von Yahoo- und AOL-Postfächern via IMAP.
+Dieses Projekt enthält einen n8n-Workflow zur automatischen Bereinigung und Organisation von Yahoo- und AOL-Postfächern via IMAP. Es nutzt **Google Gemini** zur intelligenten Klassifizierung.
 
 ## Voraussetzungen
 
@@ -20,27 +20,31 @@ Für Yahoo und AOL können **nicht** die normalen Login-Passwörter für den IMA
 1. Gehe zu den Account-Sicherheits-Einstellungen (ähnlich wie Yahoo).
 2. Generiere ein App-Passwort.
 
-### 3. KI-Modell (Optional aber empfohlen)
-Um "sinnvolle" Ordner zu erstellen und Spam intelligent zu erkennen, nutzt der Workflow idealerweise ein LLM (OpenAI oder Google Gemini).
-- Benötigt: API Key (in n8n Credentials hinterlegen).
+### 3. Google Gemini API Key
+Der Workflow nutzt das Google Gemini Modell (eingestellt auf `gemini-3.0-pro`, anpassbar).
+1. Hole dir einen API Key via [Google AI Studio](https://aistudio.google.com/).
+2. Erstelle in n8n ein Credential für "Google Gemini API".
+
+## Datenschutz & Sicherheit
+
+Bei der Analyse der E-Mails werden Daten (Betreff, Absender, Inhalt) an die Google API gesendet.
+
+*   **Training:** Bei Nutzung von kostenpflichtigen Diensten oder Vertex AI werden deine Daten laut Google **nicht** zum Training der Modelle verwendet. Bei kostenlosen "Free Tier" Keys in AI Studio *kann* Google Daten zur Verbesserung nutzen. Prüfe bitte die aktuellen [Google Generative AI Nutzungsbedingungen](https://policies.google.com/terms).
+*   **Keine lokale Speicherung:** Dieser Workflow speichert keine E-Mail-Inhalte permanent in n8n, er leitet sie nur durch.
+*   **Empfehlung:** Für maximale Privatsphäre nutze keine privaten "Free Tier" Accounts für hochsensible Daten oder schalte in Google AI Studio die Datennutzung (falls Option verfügbar) explizit aus.
 
 ## Workflow Struktur
 
 Die Datei `workflow.json` kann direkt in n8n importiert werden.
 
 **Logik:**
-1. **Trigger:** Startet periodisch (z.B. alle 15 Min) oder manuell.
-2. **Fetch:** Holt die letzten 20-50 E-Mails via IMAP (Yahoo & AOL Nodes).
-3. **Analyze:** Extrahiert Betreff, Absender und Body-Snippet.
-4. **Classify (AI):** Die KI entscheidet eine Kategorie:
-   - `Finance` (Rechnungen, Bank)
-   - `Newsletter` (Werbung, News)
-   - `Social` (Benachrichtigungen)
-   - `Personal` (Echte Konversationen)
-   - `Spam` (Unerwünscht)
-5. **Route & Action:**
-   - Verschiebt die E-Mail in den entsprechenden Ordner auf dem Server.
-   - Löscht Spam (Verschiebt in Trash).
+1. **Trigger:** Startet periodisch (z.B. alle 30 Min).
+2. **Fetch:** Holt E-Mails via IMAP (Yahoo & AOL).
+3. **Analyze (Gemini):** Sendet Metadaten an Gemini zur Klassifizierung:
+   - `Finance`, `Newsletter`, `Social`, `Travel`, `Personal`, `Junk`
+4. **Switch & Action:**
+   - Verschiebt die E-Mail in den entsprechenden Ordner.
+   - Löscht Spam.
 
 ## Installation
 
@@ -48,4 +52,5 @@ Die Datei `workflow.json` kann direkt in n8n importiert werden.
 2. Erstelle einen neuen Workflow.
 3. Klicke oben rechts auf das Menü (...) -> "Import from File".
 4. Wähle die `workflow.json` aus diesem Repository.
-5. Konfiguriere die "IMAP Credential" Nodes mit deinen Daten (User + App-Passwort).
+5. Konfiguriere die IMAP Credentials.
+6. Konfiguriere das Google Gemini Credential.

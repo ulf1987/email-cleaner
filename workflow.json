@@ -61,41 +61,29 @@
     },
     {
       "parameters": {
-        "model": "gpt-4o-mini",
-        "messages": {
-          "values": [
+        "modelName": "models/gemini-3.0-pro",
+        "options": {},
+        "prompt": {
+          "messages": [
             {
-              "role": "system",
-              "content": "You are an email organization assistant. Analyze the incoming email metadata (Subject, Sender, Body Snippet). Categorize the email into exactly ONE of the following folders: 
-- Finance (Invoices, Banks, PayPal)
-- Newsletter (Marketing, Shops)
-- Social (LinkedIn, Facebook, Notifications)
-- Travel (Tickets, Bookings)
-- Personal (Real people)
-- Junk (Spam, obvious garbage)
-
-Return ONLY the category name."
-            },
-            {
-              "content": "Subject: {{$json.subject}}
-Sender: {{$json.from}}
-Body: {{$json.textPlain}}"
+              "role": "user",
+              "content": "You are an email organization assistant. Analyze the incoming email metadata. Categorize the email into exactly ONE of the following folders: \n- Finance (Invoices, Banks, PayPal)\n- Newsletter (Marketing, Shops)\n- Social (LinkedIn, Facebook, Notifications)\n- Travel (Tickets, Bookings)\n- Personal (Real people)\n- Junk (Spam, obvious garbage)\n\nReturn ONLY the category name.\n\nSubject: {{$json.subject}}\nSender: {{$json.from}}\nBody: {{$json.textPlain}}"
             }
           ]
         }
       },
       "id": "ai-classify",
       "name": "AI Classify",
-      "type": "n8n-nodes-base.openAi",
+      "type": "n8n-nodes-base.googleGeminiChat",
       "typeVersion": 1,
       "position": [
         780,
         240
       ],
       "credentials": {
-        "openAiApi": {
-          "id": "YOUR_OPENAI_CREDENTIAL_ID",
-          "name": "OpenAI account"
+        "googlePalmApi": {
+          "id": "YOUR_GEMINI_CREDENTIAL_ID",
+          "name": "Google Gemini API"
         }
       }
     },
