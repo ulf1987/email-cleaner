@@ -53,9 +53,10 @@ Die Datei `workflow.json` kann direkt in n8n importiert werden.
 3. Klicke oben rechts auf das Menü (...) -> "Import from File".
 4. Wähle die `workflow.json` aus diesem Repository.
 5. Konfiguriere die IMAP Credentials.
-6. **WICHTIG:** Der Node "AI Classify (Placeholder)" ist nur ein Platzhalter (um Import-Fehler zu vermeiden).
-   - Lösche diesen Node.
-   - Füge einen **Google Gemini Chat** Node an derselben Stelle ein.
-   - Verbinde ihn (Input von Yahoo/AOL, Output zu Switch Category).
-   - Prompt: "Analysiere diese E-Mail und kategorisiere sie in: Finance, Newsletter, Social, Travel, Personal, Junk. Antworte NUR mit dem Kategorie-Namen."
-   - Übergebe Betreff/Body als User Message.
+6. **WICHTIG:** Der Node "AI Classify (Placeholder)" ist nur ein Platzhalter. Ersetze ihn durch den echten Google Gemini Node.
+7. **HINWEIS:** Die Nodes "Mock Move Finance", "Mock Move Newsletter" etc. sind inaktiv (NoOp).
+   - Der Standard n8n-IMAP-Node kann E-Mails oft nur *lesen*, nicht verschieben.
+   - **Lösung:** Um E-Mails wirklich zu verschieben, musst du entweder:
+     - Ein Python-Script im "Execute Command" Node nutzen (mit `imaplib`).
+     - Oder, falls möglich, die Konten über Gmail importieren und den Gmail-Node nutzen (der kann Labels/Ordner ändern).
+     - Oder einen Community-Node für erweitertes IMAP installieren.

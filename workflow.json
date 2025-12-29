@@ -110,49 +110,38 @@
       ]
     },
     {
-      "parameters": {
-        "operation": "move",
-        "messageId": "={{ $('yahoo-imap').item.json.messageId }}",
-        "mailbox": "Finance"
-      },
+      "parameters": {},
       "id": "move-finance",
-      "name": "Move to Finance",
-      "type": "n8n-nodes-base.emailReadImap",
-      "typeVersion": 2,
+      "name": "Mock Move Finance",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
       "position": [
         1280,
         100
       ]
     },
     {
-      "parameters": {
-        "operation": "move",
-        "messageId": "={{ $('yahoo-imap').item.json.messageId }}",
-        "mailbox": "Newsletter"
-      },
+      "parameters": {},
       "id": "move-newsletter",
-      "name": "Move to Newsletter",
-      "type": "n8n-nodes-base.emailReadImap",
-      "typeVersion": 2,
+      "name": "Mock Move Newsletter",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
       "position": [
         1280,
         260
       ]
     },
     {
-      "parameters": {
-        "operation": "delete",
-        "messageId": "={{ $('yahoo-imap').item.json.messageId }}"
-      },
+      "parameters": {},
       "id": "delete-junk",
-      "name": "Delete Junk",
-      "type": "n8n-nodes-base.emailReadImap",
-      "typeVersion": 2,
+      "name": "Mock Delete Junk",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
       "position": [
         1280,
         420
       ]
-    }
+    },
   ],
   "connections": {
     "Alle 30 Min": {
