@@ -22,9 +22,7 @@
       ]
     },
     {
-      "parameters": {
-        "options": {}
-      },
+      "parameters": {},
       "id": "yahoo-imap",
       "name": "Yahoo Read",
       "type": "n8n-nodes-base.emailReadImap",
@@ -41,9 +39,7 @@
       }
     },
     {
-      "parameters": {
-        "options": {}
-      },
+      "parameters": {},
       "id": "aol-imap",
       "name": "AOL Read",
       "type": "n8n-nodes-base.emailReadImap",
